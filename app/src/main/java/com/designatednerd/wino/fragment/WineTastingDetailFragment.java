@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.designatednerd.wino.R;
 import com.designatednerd.wino.activity.WineTastingDetailActivity;
 import com.designatednerd.wino.activity.WineTastingListActivity;
-import com.designatednerd.wino.dummy.DummyContent;
+//import com.designatednerd.wino.dummy.DummyContent;
 
 /**
  * A fragment representing a single WineTasting detail screen.
@@ -29,7 +29,7 @@ public class WineTastingDetailFragment extends Fragment {
     /**
      * The dummy content this fragment is presenting.
      */
-    private DummyContent.DummyItem mItem;
+//    private DummyContent.DummyItem mItem;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -46,7 +46,7 @@ public class WineTastingDetailFragment extends Fragment {
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
-            mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
+//            mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
         }
     }
 
@@ -56,9 +56,9 @@ public class WineTastingDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_winetasting_detail, container, false);
 
         // Show the dummy content as text in a TextView.
-        if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.winetasting_detail)).setText(mItem.content);
-        }
+//        if (mItem != null) {
+//            ((TextView) rootView.findViewById(R.id.winetasting_detail)).setText(mItem.content);
+//        }
 
         return rootView;
     }
