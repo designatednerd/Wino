@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.designatednerd.wino.R;
@@ -19,7 +20,7 @@ import com.designatednerd.wino.fragment.WineTastingDetailFragment;
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link WineTastingDetailFragment}.
  */
-public class WineTastingDetailActivity extends ActionBarActivity {
+public class WineTastingDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
