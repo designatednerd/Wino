@@ -1,0 +1,73 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        applicationId "com.designatednerd.wino"
+        minSdkVersion 15
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        //Required by butterknife
+        disable 'InvalidPackage'
+    }
+
+    packagingOptions {
+        //Prevent a warning when trying to do UI tests.
+        exclude 'LICENSE.txt'
+    }
+}
+
+
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    //Android compat things
+    compile 'com.android.support:appcompat-v7:22.1.1'
+    compile 'com.android.support:support-v4:22.1.1'
+    compile 'com.android.support:recyclerview-v7:21.0.0'
+
+
+    //Design support library
+    compile 'com.android.support:design:22.2.0'
+
+    //Square/Jake Wharton Thingies
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.squareup:otto:1.3.5'
+
+    //Testing
+    androidTestCompile ('com.android.support.test.espresso:espresso-core:2.1') {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+
+    androidTestCompile ('com.android.support.test:runner:0.2') {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestCompile ('com.android.support.test:rules:0.2') {
+        exclude group: 'com.android.support', module: 'support-annotations'
+
+    }
+    androidTestCompile ('com.android.support.test.espresso:espresso-intents:2.1') {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestCompile ('com.android.support.test.espresso:espresso-contrib:2.1') {
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude module: 'recyclerview-v7'
+    }
+
+
+}
