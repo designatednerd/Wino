@@ -5,13 +5,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
 
 import com.designatednerd.wino.R;
 import com.designatednerd.wino.activity.WineTastingDetailActivity;
 import com.designatednerd.wino.activity.WineTastingListActivity;
-//import com.designatednerd.wino.dummy.DummyContent;
 
 /**
  * A fragment representing a single WineTasting detail screen.

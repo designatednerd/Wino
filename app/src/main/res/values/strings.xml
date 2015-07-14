@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Wino</string>
     <string name="title_winetasting_detail">WineTasting Detail</string>
+
+    <!-- Wine type names -->
+    <string name="red">Red</string>
+    <string name="white">White</string>
+    <string name="rose">Rosé</string>
+    <string name="not_set">(not set)</string>
 </resources>

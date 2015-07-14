@@ -49,7 +49,7 @@ public class WineTastingListActivity extends FragmentActivity
             // In two-pane mode, list items should be given the
             // 'activated' state when touched.
             ((WineTastingListFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.winetasting_list))
+                    .findFragmentById(R.id.wine_tasting_frame))
                     .setActivateOnItemClick(true);
         }
 
