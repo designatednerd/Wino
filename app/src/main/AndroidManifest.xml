@@ -8,22 +8,15 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".activity.WineTastingListActivity"
+            android:name=".activity.WineTastingActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activity.WineTastingDetailActivity"
-            android:label="@string/title_winetasting_detail"
-            android:parentActivityName=".activity.WineTastingListActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.WineTastingListActivity" />
-        </activity>
+        <activity android:name=".activity.WineTastingDetailActivity"
+            />
     </application>
 
 </manifest>

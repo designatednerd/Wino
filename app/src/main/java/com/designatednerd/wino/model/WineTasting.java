@@ -1,15 +1,14 @@
 package com.designatednerd.wino.model;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.designatednerd.wino.R;
 
 import java.util.Date;
 
-/**
- * Created by ellen on 7/13/15.
- */
-public class WineTasting {
+public class WineTasting implements Parcelable {
 
     public enum WineType {
         UNKNOWN,
@@ -28,6 +27,34 @@ public class WineTasting {
                 default:
                     return aContext.getString(R.string.not_set);
             }
+        }
+
+        public String parcelableName() {
+            switch (this) {
+                case RED:
+                    return "red";
+                case WHITE:
+                    return "white";
+                case ROSE:
+                    return "rose";
+                default:
+                    return "unknown";
+            }
+        }
+
+        public static WineType fromString(String aString) {
+            if (aString != null) {
+                if (aString.equalsIgnoreCase(RED.parcelableName())) {
+                    return RED;
+                } else if (aString.equalsIgnoreCase(WHITE.parcelableName())) {
+                    return WHITE;
+                } else if (aString.equalsIgnoreCase(ROSE.parcelableName())) {
+                    return ROSE;
+                }
+            }
+
+            //Fall-through case
+            return UNKNOWN;
         }
     }
 
@@ -49,7 +76,50 @@ public class WineTasting {
     public WineTasting() {
         //Default to using the current date.
         tastingDate = new Date();
+        wineType = WineType.UNKNOWN;
     }
+
+    /********************
+     * PARCELABLE STUFF *
+     ********************/
+
+    protected WineTasting(Parcel in) {
+        vineyardName = in.readString();
+        wineName = in.readString();
+        String wineTypeName = in.readString();
+        wineType = WineType.fromString(wineTypeName);
+        wineVarietal = in.readString();
+        rating = in.readInt();
+        long tmpTastingDate = in.readLong();
+        tastingDate = tmpTastingDate != -1 ? new Date(tmpTastingDate) : null;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(vineyardName);
+        dest.writeString(wineName);
+        dest.writeString(wineType.parcelableName());
+        dest.writeString(wineVarietal);
+        dest.writeInt(rating);
+        dest.writeLong(tastingDate != null ? tastingDate.getTime() : -1L);
+    }
+
+    public static final Parcelable.Creator<WineTasting> CREATOR = new Parcelable.Creator<WineTasting>() {
+        @Override
+        public WineTasting createFromParcel(Parcel in) {
+            return new WineTasting(in);
+        }
+
+        @Override
+        public WineTasting[] newArray(int size) {
+            return new WineTasting[size];
+        }
+    };
 
 
     /***************
@@ -69,7 +139,7 @@ public class WineTasting {
             String ratingString = "";
             int starEmoji = 0x1F31F;
             while (loops > 0) {
-                ratingString = ratingString + Character.toChars(starEmoji);
+                ratingString = ratingString + new String(Character.toChars(starEmoji));
             }
 
             return ratingString;

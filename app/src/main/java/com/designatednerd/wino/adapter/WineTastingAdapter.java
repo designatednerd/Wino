@@ -14,12 +14,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class WineTastingAdapter extends RecyclerView.Adapter<WineTastingAdapter.WineTastingViewHolder> {
 
-    private List<WineTasting> mTastings;
+    /**************
+     * INTERFACES *
+     **************/
 
-    public WineTastingAdapter(List<WineTasting> aTastings) {
+    public interface TastingSelectedListener {
+        /**
+         * Called whenever a tasting is selected.
+         * @param aTasting The tasting which was selected.
+         */
+        void selectedTasting(WineTasting aTasting);
+    }
+
+    /*************
+     * VARIABLES *
+     *************/
+
+    private List<WineTasting>       mTastings;
+    private TastingSelectedListener mListener;
+
+    /**
+     * Designated constructor.
+     * @param aTastings An array of existing tastings, or null
+     * @param aListener A TastingSelectedListener object.
+     */
+    public WineTastingAdapter(List<WineTasting> aTastings,
+                              TastingSelectedListener aListener) {
+        mListener = aListener;
         if (aTastings != null) {
             mTastings = aTastings;
         } else {
@@ -27,10 +53,18 @@ public class WineTastingAdapter extends RecyclerView.Adapter<WineTastingAdapter.
         }
     }
 
+    /**
+     * Adds a tasting object to the list.
+     * @param aTasting The tasting object to add.
+     */
     public void addTasting(WineTasting aTasting) {
         mTastings.add(aTasting);
         notifyDataSetChanged();
     }
+
+    /************************
+     * SUPERCLASS OVERRIDES *
+     ************************/
 
     @Override
     public WineTastingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -50,23 +84,55 @@ public class WineTastingAdapter extends RecyclerView.Adapter<WineTastingAdapter.
         return mTastings.size();
     }
 
+    /***************
+     * VIEW HOLDER *
+     ***************/
+
     class WineTastingViewHolder extends RecyclerView.ViewHolder {
+
+        /*************
+         * VARIABLES *
+         *************/
+
+        private WineTasting mTasting;
 
         @Bind(R.id.row_tasting_wine_name_textview) TextView mWineNameTextView;
         @Bind(R.id.row_tasting_wine_rating_textview) TextView mWineRatingTextView;
         @Bind(R.id.row_tasting_date_textview) TextView mTastingDateTextView;
 
+        /***************
+         * CONSTRUCTOR *
+         ***************/
 
         public WineTastingViewHolder(View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
         }
 
+        /*****************
+         * CONFIGURATION *
+         *****************/
+
         public void configureForTasting(WineTasting aTasting) {
-            mWineNameTextView.setText(aTasting.getFullWineName());
-            mWineRatingTextView.setText(aTasting.getRatingString());
-            String formattedDate = TastingDateFormatter.shortFormattedDate(aTasting.tastingDate,
+            mTasting = aTasting;
+            mWineNameTextView.setText(mTasting.getFullWineName());
+            mWineRatingTextView.setText(mTasting.getRatingString());
+            String formattedDate = TastingDateFormatter.shortFormattedDate(mTasting.tastingDate,
                     itemView.getContext());
             mTastingDateTextView.setText(formattedDate);
+        }
+
+        /********************
+         * ONCLICK LISTENER *
+         ********************/
+
+        @OnClick(R.id.row_tasting)
+        public void rowTapped() {
+            if (mListener != null) {
+                mListener.selectedTasting(mTasting);
+            } else {
+                throw new RuntimeException("Hey you might want a listener for this!");
+            }
         }
     }
 }

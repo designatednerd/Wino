@@ -1,152 +1,89 @@
 package com.designatednerd.wino.fragment;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.view.ViewGroup;
 
 
-import com.designatednerd.wino.fragment.WineTastingDetailFragment;
+import com.designatednerd.wino.R;
+import com.designatednerd.wino.activity.WineTastingActivity;
+import com.designatednerd.wino.activity.WineTastingDetailActivity;
+import com.designatednerd.wino.adapter.WineTastingAdapter;
+import com.designatednerd.wino.adapter.WineTastingAdapter.TastingSelectedListener;
+import com.designatednerd.wino.model.WineTasting;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
- * A list fragment representing a list of WineTastings. This fragment
- * also supports tablet devices by allowing list items to be given an
- * 'activated' state upon selection. This helps indicate which item is
- * currently being viewed in a {@link WineTastingDetailFragment}.
- * <p/>
- * Activities containing this fragment MUST implement the {@link Callbacks}
- * interface.
+ * A list fragment representing a list of WineTastings.
  */
-public class WineTastingListFragment extends ListFragment {
+public class WineTastingListFragment extends Fragment implements TastingSelectedListener {
 
-    /**
-     * The serialization (saved instance state) Bundle key representing the
-     * activated item position. Only used on tablets.
-     */
-    private static final String STATE_ACTIVATED_POSITION = "activated_position";
+    /*************
+     * VARIABLES *
+     *************/
 
-    /**
-     * The fragment's current callback object, which is notified of list item
-     * clicks.
-     */
-    private Callbacks mCallbacks = sDummyCallbacks;
+    private WineTastingAdapter mAdapter;
 
-    /**
-     * The current activated item position. Only used on tablets.
-     */
-    private int mActivatedPosition = ListView.INVALID_POSITION;
+    @Bind(R.id.wine_tasting_recyclerview) RecyclerView mRecyclerView;
 
-    /**
-     * A callback interface that all activities containing this fragment must
-     * implement. This mechanism allows activities to be notified of item
-     * selections.
-     */
-    public interface Callbacks {
-        /**
-         * Callback for when an item has been selected.
-         */
-        public void onItemSelected(String id);
-    }
-
-    /**
-     * A dummy implementation of the {@link Callbacks} interface that does
-     * nothing. Used only when this fragment is not attached to an activity.
-     */
-    private static Callbacks sDummyCallbacks = new Callbacks() {
-        @Override
-        public void onItemSelected(String id) {
-        }
-    };
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public WineTastingListFragment() {
-    }
+    /**********************
+     * FRAGMENT LIFECYCLE *
+     **********************/
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
+        View main = inflater.inflate(R.layout.fragment_wine_tasting_list, container, false);
 
-        // TODO: replace with a real list adapter.
-//        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(
-//                getActivity(),
-//                android.R.layout.simple_list_item_activated_1,
-//                android.R.id.text1,
-//                DummyContent.ITEMS));
+        //Fire off butterknife to populate bound variables
+        ButterKnife.bind(this, main);
+
+        //Add layout manager to recyclerview
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(layoutManager);
+
+        //Setup adapter
+        mAdapter = new WineTastingAdapter(null, this);
+        mRecyclerView.setAdapter(mAdapter);
+        return main;
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    /*********************
+     * FRAGMENT FUNTIMES *
+     *********************/
 
-        // Restore the previously serialized activated item position.
-        if (savedInstanceState != null
-                && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
-            setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
-        }
+    private void showTastingDetail(WineTasting aTasting, boolean aIsEditable) {
+        Intent tastingDetailIntent = new Intent(getActivity(), WineTastingDetailActivity.class);
+        tastingDetailIntent.putExtra(WineTastingDetailActivity.IS_EDITING_EXTRA, aIsEditable);
+        tastingDetailIntent.putExtra(WineTastingDetailActivity.TASTING_TO_DISPLAY_EXTRA, aTasting);
+        startActivity(tastingDetailIntent);
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    /*********************
+     * ON CLICK LISTENER *
+     *********************/
 
-        // Activities containing this fragment must implement its callbacks.
-        if (!(activity instanceof Callbacks)) {
-            throw new IllegalStateException("Activity must implement fragment's callbacks.");
-        }
-
-        mCallbacks = (Callbacks) activity;
+    @OnClick(R.id.add_tasting_button)
+    public void addTasting() {
+        WineTasting tasting = new WineTasting();
+        mAdapter.addTasting(tasting);
+        showTastingDetail(tasting, true);
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
+    /*****************************
+     * TASTING SELECTED LISTENER *
+     *****************************/
 
-        // Reset the active callbacks interface to the dummy implementation.
-        mCallbacks = sDummyCallbacks;
-    }
-
-    @Override
-    public void onListItemClick(ListView listView, View view, int position, long id) {
-        super.onListItemClick(listView, view, position, id);
-
-        // Notify the active callbacks interface (the activity, if the
-        // fragment is attached to one) that an item has been selected.
-//        mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (mActivatedPosition != ListView.INVALID_POSITION) {
-            // Serialize and persist the activated item position.
-            outState.putInt(STATE_ACTIVATED_POSITION, mActivatedPosition);
-        }
-    }
-
-    /**
-     * Turns on activate-on-click mode. When this mode is on, list items will be
-     * given the 'activated' state when touched.
-     */
-    public void setActivateOnItemClick(boolean activateOnItemClick) {
-        // When setting CHOICE_MODE_SINGLE, ListView will automatically
-        // give items the 'activated' state when touched.
-        getListView().setChoiceMode(activateOnItemClick
-                ? ListView.CHOICE_MODE_SINGLE
-                : ListView.CHOICE_MODE_NONE);
-    }
-
-    private void setActivatedPosition(int position) {
-        if (position == ListView.INVALID_POSITION) {
-            getListView().setItemChecked(mActivatedPosition, false);
-        } else {
-            getListView().setItemChecked(position, true);
-        }
-
-        mActivatedPosition = position;
+    public void selectedTasting(WineTasting aTasting) {
+        showTastingDetail(aTasting, false);
     }
 }

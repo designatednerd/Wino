@@ -7,4 +7,21 @@
     <string name="white">White</string>
     <string name="rose">Rosé</string>
     <string name="not_set">(not set)</string>
+
+    <!-- Placeholders -->
+    <string name="vineyard_name">Vineyard Name</string>
+    <string name="wine_name">Wine Name</string>
+    <string name="wine_type">Wine Type</string>
+    <string name="tasting_date">Tasting Date</string>
+    <string name="wine_varietal">Varietal</string>
+    <string name="wine_rating">Rating</string>
+
+    <string-array name="ratings_array">
+        <item>\uD83D\uDC4E</item>
+        <item>\uD83C\uDF1F</item>
+        <item>\uD83C\uDF1F\uD83C\uDF1F</item>
+        <item>\uD83C\uDF1F\uD83C\uDF1F\uD83C\uDF1F</item>
+        <item>\uD83C\uDF1F\uD83C\uDF1F\uD83C\uDF1F\uD83C\uDF1F</item>
+        <item>\uD83C\uDF1F\uD83C\uDF1F\uD83C\uDF1F\uD83C\uDF1F\uD83C\uDF1F</item>
+    </string-array>
 </resources>
