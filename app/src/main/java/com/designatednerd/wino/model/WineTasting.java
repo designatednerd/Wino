@@ -79,6 +79,27 @@ public class WineTasting implements Parcelable {
         wineType = WineType.UNKNOWN;
     }
 
+    /************
+     * EQUALITY *
+     ************/
+    @Override
+    public boolean equals(Object aAnother) {
+        if (aAnother instanceof WineTasting) {
+            WineTasting other = (WineTasting)aAnother;
+            if (wineName.equals(other.wineName)
+                    && vineyardName.equals(other.vineyardName)
+                    && wineVarietal.equals(other.wineVarietal)
+                    && tastingDate.equals(other.tastingDate)
+                    && wineType.equals(other.wineType)) {
+                //If all of these are the same, the wines are equal
+                return true;
+            }
+        }
+
+        //Fall-through
+        return false;
+    }
+
     /********************
      * PARCELABLE STUFF *
      ********************/
