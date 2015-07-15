@@ -8,7 +8,7 @@ import com.designatednerd.wino.R;
 
 import java.util.Date;
 
-public class WineTasting implements Parcelable {
+public class WineTasting extends Object implements Parcelable {
 
     public enum WineType {
         UNKNOWN,
@@ -148,7 +148,7 @@ public class WineTasting implements Parcelable {
      ***************/
 
     public String getFullWineName() {
-        return wineName + "(" + wineVarietal + ", " + vineyardName + ")";
+        return wineName + " (" + wineVarietal + ", " + vineyardName + ")";
     }
 
     public String getRatingString() {
