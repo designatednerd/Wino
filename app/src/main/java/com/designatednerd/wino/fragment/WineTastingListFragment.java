@@ -54,9 +54,6 @@ public class WineTastingListFragment extends Fragment implements TastingSelected
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
 
-        //Setup adapter
-        mAdapter = new WineTastingAdapter(null, this);
-        mRecyclerView.setAdapter(mAdapter);
         return main;
     }
 
@@ -65,7 +62,14 @@ public class WineTastingListFragment extends Fragment implements TastingSelected
         super.onResume();
 
         List<WineTasting> tastings = SharedPreferencesHelper.getInstance(getActivity()).getCurrentTastings();
-        mAdapter.updateTastings(tastings);
+
+        if (mAdapter == null) {
+            //Setup adapter
+            mAdapter = new WineTastingAdapter(tastings, this);
+            mRecyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.updateTastings(tastings);
+        }
     }
 
     /*********************
