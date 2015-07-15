@@ -16,6 +16,9 @@
     <string name="wine_varietal">Varietal</string>
     <string name="wine_rating">Rating</string>
 
+    <!-- Button Titles -->
+    <string name="save_tasting_title">Save Tasting</string>
+
     <string-array name="ratings_array">
         <item>\uD83D\uDC4E</item>
         <item>\uD83C\uDF1F</item>

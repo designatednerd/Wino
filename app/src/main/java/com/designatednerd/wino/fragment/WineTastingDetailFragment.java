@@ -11,11 +11,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.designatednerd.wino.R;
+import com.designatednerd.wino.SharedPreferencesHelper;
 import com.designatednerd.wino.dialog.DatePickerDialogFragment;
 import com.designatednerd.wino.model.TastingDateFormatter;
 import com.designatednerd.wino.model.WineTasting;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,6 +40,7 @@ public class WineTastingDetailFragment extends Fragment implements DatePickerDia
     @Bind(R.id.tasting_detail_wine_name_edittext)       EditText mWineNameEditText;
     @Bind(R.id.tasting_detail_varietal_edittext)        EditText mVarietalEditText;
     @Bind(R.id.tasting_detail_tasting_date_button)      Button mTastingDateButton;
+    @Bind(R.id.tasting_detail_save_button)              Button mSaveButton;
     @Bind(R.id.tasting_detail_rating_spinner)           Spinner mRatingSpinner;
 
     /******************
@@ -77,6 +81,12 @@ public class WineTastingDetailFragment extends Fragment implements DatePickerDia
             mVarietalEditText.setEnabled(mIsEditing);
             mTastingDateButton.setEnabled(mIsEditing);
             mRatingSpinner.setEnabled(mIsEditing);
+
+            if (mIsEditing) {
+                mSaveButton.setVisibility(View.VISIBLE);
+            } else {
+                mSaveButton.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -109,6 +119,27 @@ public class WineTastingDetailFragment extends Fragment implements DatePickerDia
         String tastingDate = TastingDateFormatter.shortFormattedDate(mTasting.tastingDate, getActivity());
         mTastingDateButton.setText(tastingDate);
     }
+
+    /**********************
+     * ON CLICK LISTENERS *
+     **********************/
+
+    @OnClick(R.id.tasting_detail_save_button)
+    public void saveTasting() {
+        mTasting.vineyardName = mVineyardNameEditText.getText().toString();
+        mTasting.wineName = mWineNameEditText.getText().toString();
+        mTasting.wineVarietal = mVarietalEditText.getText().toString();
+        mTasting.rating = mRatingSpinner.getSelectedItemPosition();
+
+        SharedPreferencesHelper preferencesHelper = SharedPreferencesHelper.getInstance(getActivity());
+        List<WineTasting> currentTastings = preferencesHelper.getCurrentTastings();
+        if (currentTastings == null) {
+            currentTastings = new ArrayList<>();
+        }
+        currentTastings.add(mTasting);
+        preferencesHelper.setCurrentTastings(currentTastings);
+    }
+
 
     @OnClick(R.id.tasting_detail_tasting_date_button)
     public void showDatePicker() {

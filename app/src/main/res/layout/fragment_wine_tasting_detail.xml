@@ -82,6 +82,14 @@
             android:layout_height="wrap_content"
             />
 
+        <!-- Save button -->
+        <Button
+            android:id="@+id/tasting_detail_save_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/save_tasting_title"
+            />
+
     </LinearLayout>
 </ScrollView>
 
