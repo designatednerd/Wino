@@ -8,7 +8,7 @@ import com.designatednerd.wino.R;
 
 import java.util.Date;
 
-public class WineTasting extends Object implements Parcelable {
+public class WineTasting implements Parcelable {
 
     public enum WineType {
         UNKNOWN,
