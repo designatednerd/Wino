@@ -161,6 +161,7 @@ public class WineTasting implements Parcelable {
             int starEmoji = 0x1F31F;
             while (loops > 0) {
                 ratingString = ratingString + new String(Character.toChars(starEmoji));
+                loops--;
             }
 
             return ratingString;
