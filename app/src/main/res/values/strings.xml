@@ -19,12 +19,21 @@
     <!-- Button Titles -->
     <string name="save_tasting_title">Save Tasting</string>
 
+    <!-- Ratings -->
     <string-array name="ratings_array">
-        <item>\uD83D\uDC4E</item>
-        <item>\uD83C\uDF1F</item>
-        <item>\uD83C\uDF1F\uD83C\uDF1F</item>
-        <item>\uD83C\uDF1F\uD83C\uDF1F\uD83C\uDF1F</item>
-        <item>\uD83C\uDF1F\uD83C\uDF1F\uD83C\uDF1F\uD83C\uDF1F</item>
-        <item>\uD83C\uDF1F\uD83C\uDF1F\uD83C\uDF1F\uD83C\uDF1F\uD83C\uDF1F</item>
+        <item>Zero</item>
+        <item>One</item>
+        <item>Two</item>
+        <item>Three</item>
+        <item>Four</item>
+        <item>Five</item>
+
+        <!-- TODO: Figure out why these are barfing -->
+        <!--<item>\uD83D\uDC4E</item>-->
+        <!--<item>\uD83C\uDF1F</item>-->
+        <!--<item>\uD83C\uDF1F\uD83C\uDF1F</item>-->
+        <!--<item>\uD83C\uDF1F\uD83C\uDF1F\uD83C\uDF1F</item>-->
+        <!--<item>\uD83C\uDF1F\uD83C\uDF1F\uD83C\uDF1F\uD83C\uDF1F</item>-->
+        <!--<item>\uD83C\uDF1F\uD83C\uDF1F\uD83C\uDF1F\uD83C\uDF1F\uD83C\uDF1F</item>-->
     </string-array>
 </resources>
