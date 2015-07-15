@@ -46,11 +46,7 @@ public class WineTastingAdapter extends RecyclerView.Adapter<WineTastingAdapter.
     public WineTastingAdapter(List<WineTasting> aTastings,
                               TastingSelectedListener aListener) {
         mListener = aListener;
-        if (aTastings != null) {
-            mTastings = aTastings;
-        } else {
-            mTastings = new ArrayList<>();
-        }
+        updateTastings(aTastings);
     }
 
     /**
@@ -59,6 +55,15 @@ public class WineTastingAdapter extends RecyclerView.Adapter<WineTastingAdapter.
      */
     public void addTasting(WineTasting aTasting) {
         mTastings.add(aTasting);
+        notifyDataSetChanged();
+    }
+
+    public void updateTastings(List<WineTasting> aTastings) {
+        if (aTastings != null) {
+            mTastings = aTastings;
+        } else {
+            mTastings = new ArrayList<>();
+        }
         notifyDataSetChanged();
     }
 
@@ -81,7 +86,11 @@ public class WineTastingAdapter extends RecyclerView.Adapter<WineTastingAdapter.
 
     @Override
     public int getItemCount() {
-        return mTastings.size();
+        if (mTastings != null) {
+            return mTastings.size();
+        } else {
+            return 0;
+        }
     }
 
     /***************

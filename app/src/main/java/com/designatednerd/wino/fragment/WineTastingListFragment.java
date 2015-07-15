@@ -11,11 +11,14 @@ import android.view.ViewGroup;
 
 
 import com.designatednerd.wino.R;
+import com.designatednerd.wino.SharedPreferencesHelper;
 import com.designatednerd.wino.activity.WineTastingActivity;
 import com.designatednerd.wino.activity.WineTastingDetailActivity;
 import com.designatednerd.wino.adapter.WineTastingAdapter;
 import com.designatednerd.wino.adapter.WineTastingAdapter.TastingSelectedListener;
 import com.designatednerd.wino.model.WineTasting;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -55,6 +58,14 @@ public class WineTastingListFragment extends Fragment implements TastingSelected
         mAdapter = new WineTastingAdapter(null, this);
         mRecyclerView.setAdapter(mAdapter);
         return main;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        List<WineTasting> tastings = SharedPreferencesHelper.getInstance(getActivity()).getCurrentTastings();
+        mAdapter.updateTastings(tastings);
     }
 
     /*********************
