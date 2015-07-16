@@ -11,10 +11,11 @@
     <TextView
         android:id="@+id/row_tasting_date_textview"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
         tools:text="12/25/15"
+        style="@style/TinyTextView"
         />
 
     <LinearLayout

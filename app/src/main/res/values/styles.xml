@@ -13,6 +13,11 @@
 
     <style name="LargeTextView">
         <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TinyTextView">
+        <item name="android:textSize">12sp</item>
     </style>
 
 </resources>
