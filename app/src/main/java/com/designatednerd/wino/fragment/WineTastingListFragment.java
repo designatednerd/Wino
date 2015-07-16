@@ -90,7 +90,6 @@ public class WineTastingListFragment extends Fragment implements TastingSelected
     @OnClick(R.id.add_tasting_button)
     public void addTasting() {
         WineTasting tasting = new WineTasting();
-        mAdapter.addTasting(tasting);
         showTastingDetail(tasting, true);
     }
 
