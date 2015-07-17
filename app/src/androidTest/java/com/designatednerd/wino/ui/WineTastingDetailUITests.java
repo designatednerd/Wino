@@ -1,17 +1,19 @@
 package com.designatednerd.wino.ui;
 
 import android.content.Context;
+import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.rule.ActivityTestRule;
+import android.view.View;
 
 import com.designatednerd.wino.R;
 import com.designatednerd.wino.SharedPreferencesHelper;
 import com.designatednerd.wino.activity.WineTastingActivity;
 import com.designatednerd.wino.model.WineTasting;
 
+import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -20,9 +22,14 @@ import java.util.List;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withChild;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.designatednerd.wino.ui.EspressoHelpers.*;
+import static org.hamcrest.CoreMatchers.allOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -136,11 +143,46 @@ public class WineTastingDetailUITests {
         //back out to the main view for the next test.
         pressBack();
     }
-        //TODO: Fix this so it actually works
-//        onRecyclerItemView(R.id.row_tasting,
-//                R.id.row_tasting_wine_name_textview,
-//                )
-//                .check(withText("Test Wine Name (Rodney Strong, Cabernet Sauvignon)"));
-    }
 
+    @Test
+    public void savingDataInTheDetailShowsUpInTheRecyclerView() {
+        //Setup test variables
+        String wineName = "RecyclerView";
+        String vineyardName = "Google Vineyards";
+        String varietal = "Syrah";
+        int rating = 5;
+
+        enterAndSaveWineInfo(wineName,
+                vineyardName,
+                varietal,
+                rating);
+
+        //back out to the main view
+        pressBack();
+
+        String expectedWineName = WineTasting.wineNameFromInfo(wineName, vineyardName, varietal);
+
+        //The child of the view this Matcher is passed into has the appropriate title in the title view.
+        Matcher<View> hasTitleChildWithAppropriateContent = withChild(allOf(withId(R.id.row_tasting_wine_name_textview),
+                                                                            withText(expectedWineName)));
+
+        String stars = "";
+        for (int i = 0; i < rating; i++) {
+            stars = stars + new String(Character.toChars(0x1F31F));
+        }
+
+        //The child of the view this Matcher is passed into has the appropriate content in the rating view.
+        Matcher<View> hasRatingChildWithAppropriateContent = withChild(allOf(withId(R.id.row_tasting_wine_rating_textview),
+                                                                             withText(stars)));
+
+        //The child of the view this is passed into has two children that fulfill the above Matchers -
+        //This is necessary because these two TextViews are wrapped in a LinearLayout.
+        Matcher<View> hasChildWithBothChildren = withChild(allOf(hasTitleChildWithAppropriateContent,
+                                                                 hasRatingChildWithAppropriateContent));
+
+
+        //Grab the recycler view at the given index, and make sure all children match.
+        onRecyclerItemViewAtPosition(R.id.wine_tasting_recyclerview, 0)
+                .check(matches(hasChildWithBothChildren));
+    }
 }
