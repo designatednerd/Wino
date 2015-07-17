@@ -79,6 +79,28 @@ public class WineTasting implements Parcelable {
         wineType = WineType.UNKNOWN;
     }
 
+    /******************
+     * STATIC METHODS *
+     ******************/
+
+    public static String wineNameFromInfo(String aWineName, String aVineyardName, String aVarietal) {
+        if (aWineName != null
+                && aVineyardName != null
+                && aVarietal != null) { //got everything
+            return aWineName + " (" + aVarietal + ", " + aVineyardName + ")";
+        } else if (aWineName != null
+                && aVineyardName !=null) { //No varietal
+            return aWineName + " (" + aVineyardName + ")";
+        } else if (aWineName != null
+                && aVarietal != null) { //no vineyard
+            return aWineName + " (" + aVarietal + ")";
+        } else if (aWineName != null) { //wine name only
+            return aWineName;
+        } else { //Nothing specified
+            return "";
+        }
+    }
+
     /************
      * EQUALITY *
      ************/
@@ -148,7 +170,7 @@ public class WineTasting implements Parcelable {
      ***************/
 
     public String getFullWineName() {
-        return wineName + " (" + wineVarietal + ", " + vineyardName + ")";
+        return wineNameFromInfo(wineName, vineyardName, wineVarietal);
     }
 
     public String getRatingString() {
