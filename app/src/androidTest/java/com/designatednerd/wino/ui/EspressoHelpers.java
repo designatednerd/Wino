@@ -22,13 +22,29 @@ import static org.hamcrest.CoreMatchers.allOf;
 
 public class EspressoHelpers {
 
+    /**************
+     * TEXT ENTRY *
+     **************/
+
+    public static void enterTextIntoViewWithHint(String aTextToEnter, @StringRes int aHintResID) {
+        onView(withHint(aHintResID)).perform(typeText(aTextToEnter));
+    }
+
     public static void enterTextIntoViewWithID(String aTextToEnter, @IdRes int aViewID) {
         onView(withId(aViewID)).perform(typeText(aTextToEnter));
     }
 
+    /*************
+     * SCROLLING *
+     *************/
+
     public static void scrollToViewWithID(@IdRes int aViewIDRes) {
         onView(withId(aViewIDRes)).perform(scrollTo());
     }
+
+    /***********
+     * TAPPING *
+     ***********/
 
     public static void tapViewWithText(String aText) {
         onView(withText(aText)).perform(click());
@@ -42,11 +58,13 @@ public class EspressoHelpers {
         onView(withId(aViewResID)).perform(click());
     }
 
-    //TODO: FIX
+    /**********************
+     * RECYCLERVIEW STUFF *
+     **********************/
 
-//    public static Matcher<View> withRecyclerView(@IdRes int viewId) {
-//        return allOf(isAssignableFrom(RecyclerView.class), withId(viewId));
-//    }
+    public static Matcher<View> withRecyclerView(@IdRes int viewId) {
+        return allOf(isAssignableFrom(RecyclerView.class), withId(viewId));
+    }
 //
 //
 //    //Modified from https://gist.github.com/tommyd3mdi/2622caecc1b2d498cd1a
