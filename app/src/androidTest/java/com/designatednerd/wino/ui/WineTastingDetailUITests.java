@@ -38,13 +38,18 @@ public class WineTastingDetailUITests {
 
     @Before
     public void beforeEachTest() {
+        //Nuke any old state
         SharedPreferencesHelper
                 .getInstance(getContext())
                 .nukeAllSharedPreferences();
+
+        //Go from the initial launch page to the details page.
+        goToDetailsPage();
     }
 
     @After
     public void afterEachTest() {
+        //Nuke any state which was just added.
         SharedPreferencesHelper
                 .getInstance(getContext())
                 .nukeAllSharedPreferences();
@@ -68,6 +73,7 @@ public class WineTastingDetailUITests {
                                       String aVineyardName,
                                       String aVarietal,
                                       int aRating) {
+        //Enter the information into text views
         enterTextIntoViewWithID(aVineyardName, R.id.tasting_detail_vineyard_name_edittext);
         enterTextIntoViewWithID(aVarietal, R.id.tasting_detail_varietal_edittext);
         enterTextIntoViewWithID(aWineName, R.id.tasting_detail_wine_name_edittext);
@@ -78,8 +84,11 @@ public class WineTastingDetailUITests {
 //        enterTextIntoViewWithHint(aVarietal, R.string.wine_varietal);
 //        enterTextIntoViewWithHint(aWineName, R.string.wine_name);
 
+        //Select a rating using the spinner
         tapViewWithID(R.id.tasting_detail_rating_spinner);
 
+        //Pull a string representing a rating from the array rather than hard-coding it
+        //so you don't have to change the test when the text in the array changes.
         String[] ratings = getContext().getResources().getStringArray(R.array.ratings_array);
         String desiredRating = ratings[aRating];
         tapViewWithText(desiredRating);
@@ -94,9 +103,7 @@ public class WineTastingDetailUITests {
 
     @Test
     public void savingDataInTheDetailIsPersistedToUserDefaults() {
-        goToDetailsPage();
-
-        //Enter the text into the
+        //Use variables to make these easier to test against.
         String testWineName = "Test wine name";
         String testVarietal = "Cabernet Sauvignon";
         String testVineyard = "Rodney Strong";
@@ -107,14 +114,17 @@ public class WineTastingDetailUITests {
                 testVarietal,
                 testRating);
 
-        String expectedWineName = "Test wine name (Cabernet Sauvignon, Rodney Strong)";
+        String expectedWineName = WineTasting.wineNameFromInfo(testWineName, testVineyard, testVarietal);
 
         //Check that input is saving
-        List<WineTasting> savedTastings = SharedPreferencesHelper.getInstance(getContext()).getCurrentTastings();
+        List<WineTasting> savedTastings = SharedPreferencesHelper.getInstance(getContext())
+                .getCurrentTastings();
 
+        //Make sure the saved tastings only has the one which was just added.
         assertNotNull(savedTastings);
         assertEquals(savedTastings.size(), 1);
 
+        //Grab the tasting and then verify the data matches what was entered.
         WineTasting savedTasting = savedTastings.get(0);
 
         assertEquals(savedTasting.vineyardName, testVineyard);
